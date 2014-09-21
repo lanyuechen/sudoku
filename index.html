@@ -3,13 +3,84 @@
 <head>
 	<meta charset="UTF-8">
 	<title>sudoku</title>
+<style>
+	body{
+		width: 970px;
+		margin:  20px auto;
+	}
+	table{
+		border: 2px solid #aaa;
+		border-radius: 4px;
+		float: left;
+	}
+	table tr td input{
+		width: 25px;
+		height: 25px;
+		text-align: center;
+	}
+	#opt{
+		float: left;
+	}
+</style>
 </head>
 <body>
+	<table cellpadding="1" cellspacing="0">
+		<tr><th></th><th></th><th></th><th rowspan="12" style="background:#aaa"></th><th></th><th></th><th></th><th rowspan="12" style="background:#aaa"></th><th></th><th></th><th></th></tr>
+		<tr class="data">
+			<td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+		</tr>
+		<tr class="data">
+			<td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+		</tr>
+		<tr class="data">
+			<td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+		</tr>
+		<tr><td colspan="11" style="background:#aaa"></td></tr>
+		<tr class="data">
+			<td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+		</tr>
+		<tr class="data">
+			<td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+		</tr>
+		<tr class="data">
+			<td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+		</tr>
+		<tr><td colspan="11" style="background:#aaa"></td></tr>
+		<tr class="data">
+			<td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+		</tr>
+		<tr class="data">
+			<td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+		</tr>
+		<tr class="data">
+			<td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+		</tr>
+	</table>
+
+	<div id="opt">
+		<input type="button" value="解答" onclick="execute()">
+	</div>
 	
+	<script src="jquery-1.7.min.js"></script>
 	<script src="sudoku.js"></script>
 	<script>
-		var res = sudoku.fill();
-		console.log(res);
+		function getSudoArr(){
+			var arr = [];
+			$('tr.data').each(function(i, col){
+				arr[i] = [];
+				$(col).children('td').each(function(j, row){
+					var val = parseInt($(row).children('input').val()) || 0;
+					arr[i][j] = val;
+				});
+			});
+			return arr;
+		}
+		function execute(){
+			var sudo = getSudoArr();
+			console.log(sudo);
+			var res = sudoku.fill(sudo);
+			console.log(res);
+		}
 	</script>
 </body>
 </html>
