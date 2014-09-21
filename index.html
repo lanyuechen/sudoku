@@ -20,6 +20,7 @@
 	}
 	#opt{
 		float: left;
+		margin-left: 15px;
 	}
 </style>
 </head>
@@ -58,12 +59,20 @@
 	</table>
 
 	<div id="opt">
-		<input type="button" value="解答" onclick="execute()">
+		<input type="button" value="生成" onclick="generate()"><br>
+		<input type="button" value="清空" onclick="clearSudo()"><br>
+		<input type="button" value="解答" onclick="execute()"><br>
+		<span id="count"></span>
 	</div>
 	
 	<script src="jquery-1.7.min.js"></script>
 	<script src="sudoku.js"></script>
 	<script>
+		function generate(){
+			var res = sudoku.generate();
+			console.log(res);
+			setSudoArr(res);
+		}
 		function getSudoArr(){
 			var arr = [];
 			$('tr.data').each(function(i, col){
@@ -75,11 +84,26 @@
 			});
 			return arr;
 		}
+		function setSudoArr(arr){
+			$('tr.data').each(function(i, col){
+				$(col).children('td').each(function(j, row){
+					$(row).children('input').val(arr[i][j]);
+				});
+			});
+		}
+		function clearSudo(){
+			$('tr.data').each(function(i, col){
+				$(col).children('td').each(function(j, row){
+					$(row).children('input').val('');
+				});
+			});
+			$('#count').html('');
+		}
 		function execute(){
 			var sudo = getSudoArr();
-			console.log(sudo);
 			var res = sudoku.fill(sudo);
-			console.log(res);
+			$('#count').html('共尝试'+res.count+'次');
+			setSudoArr(res.data);
 		}
 	</script>
 </body>

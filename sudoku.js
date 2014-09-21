@@ -1,39 +1,34 @@
 var sudoku = (function(){
 	
-	var sudo = {data : [], mark : []};
-	
-	var example = [
-		[0, 8, 0, 0, 0, 2, 7, 0, 0],
-		[5, 0, 3, 7, 0, 0, 4, 0, 0],
-		[0, 6, 7, 0, 5, 0, 0, 0, 3],
-		[6, 9, 0, 0, 7, 4, 0, 0, 5],
-		[0, 0, 5, 0, 0, 0, 1, 0, 0],
-		[2, 0, 0, 9, 1, 0, 0, 7, 4],
-		[3, 0, 0, 0, 2, 0, 8, 6, 0],
-		[0, 0, 2, 0, 0, 6, 5, 0, 7],
-		[0, 0, 6, 5, 0, 0, 0, 3, 0]
-	];
+	var sudo = {data : [], mark : [], count : 0};
 
-	//获取数独状态
-	var getSudo = function(arr){
+	//随机生成数独
+	var generate = function(){
+		var arr = [];
 		for(var i = 0; i < 9; i++){
-			sudo.data[i] = [];
-			sudo.mark[i] = [];
+			arr[i] = [];
 			for(var j = 0; j < 9; j++){
-				if(arr[i][j] > 0){
-					sudo.data[i][j] = arr[i][j];
-					sudo.mark[i][j] = true;
+				arr[i][j] = 0;
+			}
+		}
+		var res = fill(arr);
+		var seed = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+		seed.sort(function(){ return 0.5 - Math.random() });
+		for(var i = 0; i < 9; i++){
+			for(var j = 0; j < 9; j++){
+				if(Math.random() > 0.5){
+					res.data[i][j] = '';
 				}else{
-					sudo.data[i][j] = 0;
-					sudo.mark[i][j] = false;
+					res.data[i][j] = seed[res.data[i][j] - 1];
 				}
 			}
 		}
-	};
+		return res.data;
+	}
 
 	//填充数独
 	var fill = function(arr){
-		arr = arr || example;
+		arr = arr || generate();
 		getSudo(arr);
 
 		var count = 0;										//填充次数
@@ -50,8 +45,25 @@ var sudoku = (function(){
 				pos = next(pos.x, pos.y);
 			}
 		}
-		console.log('count='+count);
-		return sudo.data;
+		sudo.count = count;
+		return sudo;
+	};
+
+	//获取数独状态
+	var getSudo = function(arr){
+		for(var i = 0; i < 9; i++){
+			sudo.data[i] = [];
+			sudo.mark[i] = [];
+			for(var j = 0; j < 9; j++){
+				if(arr[i][j] > 0){
+					sudo.data[i][j] = arr[i][j];
+					sudo.mark[i][j] = true;
+				}else{
+					sudo.data[i][j] = 0;
+					sudo.mark[i][j] = false;
+				}
+			}
+		}
 	};
 
 	//下一个空格位置
@@ -122,7 +134,7 @@ var sudoku = (function(){
 	};
 
 	return {
-		fill : fill,
-		numFill : numFill
+		generate : generate,
+		fill : fill
 	};
 })();
